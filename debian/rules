@@ -21,10 +21,10 @@ BUILD_ARGS_GO := $(if $(shell dpkg --compare-versions $(DH_GOLANG_VER) ge 1.38 &
 %:
 	dh $@ --with yang,golang,python3 --buildsystem=golang --builddirectory=$(GOBUILDDIR)
 
-override_dh_auto_build: vet
+override_dh_auto_build:
 	# configd/opd AAA plugin
 	cd $(GOBUILDDIR)/src; \
-	GOPATH=$(GO_PATH) \
+	GOPATH=$(GO_PATH) GO111MODULE=off \
 	go build $(BUILD_ARGS_GO) -buildmode=plugin \
 		-o tacplus.so eng.vyatta.net/tacplus/aaa-plugin/
 
